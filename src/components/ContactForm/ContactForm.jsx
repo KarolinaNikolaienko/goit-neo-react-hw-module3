@@ -2,6 +2,7 @@ import css from './ContactForm.module.css';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useId } from 'react';
 import * as Yup from 'yup';
+import { nanoid } from 'nanoid';
 
 const ContactForm = ({ submit }) => {
   const validationSchema = Yup.object().shape({
@@ -10,7 +11,9 @@ const ContactForm = ({ submit }) => {
       .max(50, 'Maximum 50 letters')
       .required('Name is required'),
     number: Yup.string()
-      .matches(/^[0-9]{3}-[0-9]{2}-[0-9]{2}$/, 'Must be in format 123-45-67')
+      // .matches(/^[0-9]{3}-[0-9]{2}-[0-9]{2}$/, 'Must be in format 123-45-67')
+      .min(3, 'Minimum 3 letters')
+      .max(50, 'Maximum 50 letters')
       .required('Number is required'),
     id: Yup.string().required(),
   });
@@ -28,7 +31,7 @@ const ContactForm = ({ submit }) => {
       initialValues={{
         name: '',
         number: '',
-        id: '',
+        id: nanoid(),
       }}
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
@@ -63,7 +66,9 @@ const ContactForm = ({ submit }) => {
             component="span"
           ></ErrorMessage>
         </div>
-        <button className={css.addBtn}>Add contact</button>
+        <button className={css.addBtn} type="submit">
+          Add contact
+        </button>
       </Form>
     </Formik>
   );
